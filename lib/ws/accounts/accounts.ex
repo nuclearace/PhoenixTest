@@ -39,6 +39,27 @@ defmodule Ws.Accounts do
   def get_user!(id), do: Repo.get!(User, id)
 
   @doc """
+  Gets a single user and checking their password
+
+  ## Examples
+
+      iex> get_user!("nuke", "test")
+      {:ok, user}
+
+      iex> get_user!("nuke", "t)
+      {:error, "Bad password"}
+
+  """
+  def get_user(username, password) do
+    user = Repo.get_by!(User, username: username)
+
+    case Bcrypt.checkpw(password, user.password) do
+      true -> {:ok, user}
+      false -> {:error, "Bad password"}
+    end
+  end
+
+  @doc """
   Creates a user.
 
   ## Examples
@@ -101,11 +122,5 @@ defmodule Ws.Accounts do
   """
   def change_user(%User{} = user) do
     User.changeset(user, %{})
-  end
-
-  def valid_password!(username, password) do
-    user = Repo.get_by!(User, username: username)
-
-    Bcrypt.checkpw(password, user.password)
   end
 end

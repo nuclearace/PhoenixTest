@@ -1,5 +1,6 @@
 defmodule WsWeb.Router do
   use WsWeb, :router
+  alias WsWeb.AuthErrorHandler
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -9,12 +10,18 @@ defmodule WsWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :authentication do
+    plug Guardian.Plug.Pipeline, module: LoginAPIController, error_handler: AuthErrorHandler
+    plug Guardian.Plug.VerifySession
+    plug Guardian.Plug.LoadResource
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
 
   scope "/", WsWeb do
-    pipe_through :browser
+    pipe_through [:browser, :authentication]
 
     get "/", PageController, :index
   end

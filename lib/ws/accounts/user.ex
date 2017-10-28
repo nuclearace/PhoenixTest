@@ -2,7 +2,6 @@ defmodule Ws.Accounts.User do
   require Logger
 
   use Ecto.Schema
-  use Guardian, otp_app: :ws
 
   import Ecto.Changeset
 
@@ -41,21 +40,5 @@ defmodule Ws.Accounts.User do
     |> cast(attrs, [:firstname, :lastname, :username, :password])
     |> validate_required([:firstname, :lastname, :username, :password])
     |> unique_constraint(:username)
-  end
-
-  def subject_for_token(%User{} = resource, _claims) do
-    {:error, :not_implemented}
-  end
-
-  def subject_for_token(_, _) do
-    {:error, :reason_for_error}
-  end
-
-  def resource_from_claims(claims) do
-    {:error, :reason_for_error}
-  end
-
-  def resource_from_claims(_claims) do
-    {:error, :reason_for_error}
   end
 end

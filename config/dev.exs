@@ -14,6 +14,11 @@ config :ws, WsWeb.Endpoint,
   watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
                     cd: Path.expand("../assets", __DIR__)]]
 
+config :ws, WsWeb.LoginAPIController,
+       issuer: "ws",
+       serializer: Ws.UserSerializer,
+       secret_key: "u2HWe3+X9sXBPoHHQieKmWhU0jTvkWLGY63WKBUDEeGNM67UHc7SxJemaVnEvYOv"
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

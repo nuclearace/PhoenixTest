@@ -18,9 +18,10 @@ config :ws, WsWeb.Endpoint,
   url: [host: "example.com", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
-config :ws, MyApp.Guardian,
+config :ws, WsWeb.LoginAPIController,
        issuer: "ws",
-       secret_key: "klcUNB21/2gFsE2dxoin+ix0oHg8rO7uUAiJR2M97S3J005vDNunB4r+s7IgJxuO"
+       serializer: Ws.UserSerializer,
+       secret_key: "some_key"
 
 # Do not print debug messages in production
 config :logger, level: :info
