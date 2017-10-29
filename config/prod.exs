@@ -20,7 +20,6 @@ config :ws, WsWeb.Endpoint,
 
 config :ws, WsWeb.LoginAPIController,
        issuer: "ws",
-       serializer: Ws.UserSerializer,
        secret_key: "some_key"
 
 # Do not print debug messages in production

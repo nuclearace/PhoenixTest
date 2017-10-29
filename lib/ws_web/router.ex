@@ -11,9 +11,13 @@ defmodule WsWeb.Router do
   end
 
   pipeline :authentication do
-    plug Guardian.Plug.Pipeline, module: LoginAPIController, error_handler: AuthErrorHandler
-    plug Guardian.Plug.VerifySession
-    plug Guardian.Plug.LoadResource
+    plug Guardian.Plug.Pipeline, otp_app: :ws,
+                                 module: LoginAPIController,
+                                 error_handler: AuthErrorHandler,
+                                 key: "memes"
+    plug Guardian.Plug.VerifyCookie, claims: %{"typ" => "access"}, realm: :none
+    plug Guardian.Plug.EnsureAuthenticated
+    plug Guardian.Plug.LoadResource, ensure: true
   end
 
   pipeline :api do

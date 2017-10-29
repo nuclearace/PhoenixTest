@@ -17,16 +17,20 @@ defmodule WsWeb.LoginAPIController do
 
   defp authenticate_user(conn, user) do
     conn
-    |> LoginAPIController.Plug.sign_in(user)
+    |> LoginAPIController.Plug.remember_me(user, %{"typ" => "access"}, key: "memes")
     |> redirect(to: "/")
     |> halt()
   end
 
-  def subject_for_token(%User{} = resource, _claims) do
-    {:ok, to_string(resource.username)}
+  def subject_for_token(%User{id: id} = _resource, _claims) do
+    {:ok, "User:" <> to_string(id)}
   end
 
-  def resource_from_claims(claims) do
-    IO.puts to_string(claims)
+  def resource_from_claims(%{"sub" => "User:" <> id}) do
+    {:ok, user = Accounts.get_user!(Integer.parse(id))}
+  end
+
+  def on_verify(_claims) do
+    IO.puts "doing verify"
   end
 end

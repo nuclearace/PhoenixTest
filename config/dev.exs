@@ -16,7 +16,6 @@ config :ws, WsWeb.Endpoint,
 
 config :ws, WsWeb.LoginAPIController,
        issuer: "ws",
-       serializer: Ws.UserSerializer,
        secret_key: "u2HWe3+X9sXBPoHHQieKmWhU0jTvkWLGY63WKBUDEeGNM67UHc7SxJemaVnEvYOv"
 
 # ## SSL Support
