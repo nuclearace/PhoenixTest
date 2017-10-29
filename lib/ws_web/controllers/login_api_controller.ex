@@ -1,10 +1,9 @@
 defmodule WsWeb.LoginAPIController do
   use WsWeb, :controller
-  use Guardian, otp_app: :ws
 
   alias Ws.Accounts
   alias Ws.Accounts.User
-  alias WsWeb.LoginAPIController
+  alias WsWeb.Guardian
 
   action_fallback WsWeb.FallbackController
 
@@ -17,20 +16,8 @@ defmodule WsWeb.LoginAPIController do
 
   defp authenticate_user(conn, user) do
     conn
-    |> LoginAPIController.Plug.remember_me(user, %{"typ" => "access"}, key: "memes")
+    |> Guardian.Plug.remember_me(user, %{}, key: "guardian_memes_token")
     |> redirect(to: "/")
     |> halt()
-  end
-
-  def subject_for_token(%User{id: id} = _resource, _claims) do
-    {:ok, "User:" <> to_string(id)}
-  end
-
-  def resource_from_claims(%{"sub" => "User:" <> id}) do
-    {:ok, user = Accounts.get_user!(Integer.parse(id))}
-  end
-
-  def on_verify(_claims) do
-    IO.puts "doing verify"
   end
 end

@@ -14,7 +14,7 @@ config :ws, WsWeb.Endpoint,
   watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
                     cd: Path.expand("../assets", __DIR__)]]
 
-config :ws, WsWeb.LoginAPIController,
+config :ws, WsWeb.Guardian,
        issuer: "ws",
        secret_key: "u2HWe3+X9sXBPoHHQieKmWhU0jTvkWLGY63WKBUDEeGNM67UHc7SxJemaVnEvYOv"
 

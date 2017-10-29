@@ -51,11 +51,13 @@ defmodule Ws.Accounts do
 
   """
   def get_user(username, password) do
-    user = Repo.get_by!(User, username: username)
-
-    case Bcrypt.checkpw(password, user.password) do
-      true -> {:ok, user}
-      false -> {:error, "Bad password"}
+    with %User{} = user <- Repo.get_by(User, username: username) do
+      case Bcrypt.checkpw(password, user.password) do
+        true -> {:ok, user}
+        false -> {:error, "Bad password"}
+      end
+      else
+      nil -> {:error, "Bad username"}
     end
   end
 

@@ -18,7 +18,7 @@ config :ws, WsWeb.Endpoint,
   url: [host: "example.com", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
-config :ws, WsWeb.LoginAPIController,
+config :ws, WsWeb.Guardian,
        issuer: "ws",
        secret_key: "some_key"
 
