@@ -14,7 +14,7 @@ defmodule WsWeb.LoginAPIController do
     end
   end
 
-  defp authenticate_user(conn, user) do
+  def authenticate_user(conn, user) do
     conn
     |> Guardian.Plug.remember_me(user, %{}, key: "guardian_memes_token")
     |> redirect(to: "/")
