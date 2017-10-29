@@ -39,7 +39,7 @@ defmodule Ws.Accounts do
   def get_user!(id), do: Repo.get!(User, id)
 
   @doc """
-  Gets a single user and checking their password
+  Gets a single user by username and checks their password
 
   ## Examples
 
@@ -51,13 +51,11 @@ defmodule Ws.Accounts do
 
   """
   def get_user(username, password) do
-    with %User{} = user <- Repo.get_by(User, username: username) do
-      case Bcrypt.checkpw(password, user.password) do
-        true -> {:ok, user}
-        false -> {:error, "Bad password"}
-      end
+    with %User{} = user <- Repo.get_by(User, username: username),
+         true <- Bcrypt.checkpw(password, user.password) do
+        {:ok, user}
       else
-      nil -> {:error, "Bad username"}
+        _ -> {:error, "Bad username/password"}
     end
   end
 
